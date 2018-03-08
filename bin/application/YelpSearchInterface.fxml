@@ -55,7 +55,7 @@
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
                                           <DatePicker fx:id="userDatePicker" layoutX="100.0" layoutY="60.0" />
-                                          <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users">
+                                          <Text layoutX="8.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
@@ -109,6 +109,12 @@
                                           <TextField fx:id="reviewsField" layoutX="290.0" layoutY="90.0" prefHeight="25.0" prefWidth="47.0" />
                                           <TextField fx:id="numberFriendsField" layoutX="290.0" layoutY="119.0" prefHeight="25.0" prefWidth="47.0" />
                                           <TextField fx:id="avgStarsField" layoutX="290.0" layoutY="150.0" prefHeight="25.0" prefWidth="47.0" />
+                                          <TableView fx:id="userReviewTable" layoutX="11.0" layoutY="230.0" prefHeight="133.0" prefWidth="328.0" />
+                                          <Text fx:id="reviewsByText" layoutX="15.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reviews by User: ">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Text>
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

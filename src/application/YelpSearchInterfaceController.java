@@ -33,6 +33,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 
 public class YelpSearchInterfaceController {
 
@@ -72,10 +73,15 @@ public class YelpSearchInterfaceController {
 	private TextField avgStarsField;
 	@FXML
 	private ChoiceBox SelectChoiceBox;
+	@FXML
+	private Text reviewsByText;
+	@FXML 
+	private TableView<Reviews> userReviewTable;
 
-	// Sample
+	// Samples
 	private ObservableList<YelpID> data = FXCollections.observableArrayList();
-
+	private ObservableList<Reviews> reviewData = FXCollections.observableArrayList();
+	
 	public YelpSearchInterfaceController() {
 
 		businessTabbool = false;
@@ -212,8 +218,6 @@ public class YelpSearchInterfaceController {
 		ResultSetMetaData meta = r.getMetaData();
 
 		while (r.next()) {
-			for (int col = 1; col <= meta.getColumnCount(); col++) {
-			}
 			YelpID test = new YelpID(r.getString("userid"), 
 					r.getString("name"), 
 					r.getDate("yelpingSince").toString(),
@@ -229,7 +233,9 @@ public class YelpSearchInterfaceController {
 	public void ClearRowsUserTable() {
 		// Removes all column to allow for new Query
 		userTable.getColumns().clear();
+		userReviewTable.getColumns().clear();
 		data = FXCollections.observableArrayList();
+		reviewData = FXCollections.observableArrayList();
 		// TimeUnit.MINUTES.sleep(1);
 	}
 
@@ -263,7 +269,6 @@ public class YelpSearchInterfaceController {
 
 		userTable.setItems(data);
 		userTable.getColumns().addAll(nameCol, userIDCol, memberSinceCol, reviewsCountCol,friendCountCol,avgStarsCol);
-
 	}
 
 	public void OnUserRowClicked() {
@@ -271,6 +276,70 @@ public class YelpSearchInterfaceController {
 		System.out.println(userTable.getSelectionModel().getSelectedItem().toString());
 		YelpID yelpTest = userTable.getSelectionModel().getSelectedItem();
 		System.out.println(yelpTest.getUserID());
+		System.out.println(userTable.getSelectionModel().getSelectedCells());
+		reviewsByText.setText("Reviews by User: " + yelpTest.getName() + "(" +yelpTest.getUserID().trim()+ ")");
+		try {
+			AddRowsReviews(yelpTest.getUserID());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void AddRowsReviews(String userID) throws SQLException {
+		userReviewTable.getColumns().clear();
+		reviewData = FXCollections.observableArrayList();
+		
+		userID = userID.trim(); //Removes whitespace
+		System.out.println(userID);
+		String sqlQuery = "SELECT * " + "FROM Reviews WHERE userID = '" + userID + "'" ;
+	
+		// Execute Select SQL Statement
+		Statement stmt = connection.createStatement();
+		System.out.println(sqlQuery);
+		ResultSet r = stmt.executeQuery(sqlQuery); // Inserts the query into ShowQuery
+		ResultSetMetaData meta = r.getMetaData();
+
+		while (r.next()) {
+			System.out.println("Stars " + r.getInt("stars"));
+			System.out.println("Stars " + r.getString("stars"));
+			Reviews test = new Reviews(r.getString("userid"), 
+					r.getString("reviewsID"), 
+					r.getDate("reviewDate").toString(),
+					r.getString("businessID"),
+					r.getLong("stars"),
+					r.getLong("voteCount"));
+			reviewData.add(test);
+		}
+		AddUserReviewsTable();
+	}
+	
+	public void AddUserReviewsTable() {
+		System.out.println("Columns added");
+
+		// Name
+		TableColumn reviewIDCol = new TableColumn("Review ID");
+		reviewIDCol.setMinWidth(150);
+		reviewIDCol.setCellValueFactory(new PropertyValueFactory<Reviews, String>("reviewsID"));
+		// UserID
+		TableColumn reviewDateCol = new TableColumn("Review Date");
+		reviewDateCol.setMinWidth(100);
+		reviewDateCol.setCellValueFactory(new PropertyValueFactory<Reviews, String>("reviewDate"));
+		// MembersSince
+		TableColumn businessIDCol = new TableColumn("Business ID");
+		businessIDCol.setMinWidth(100);
+		businessIDCol.setCellValueFactory(new PropertyValueFactory<Reviews, String>("businessID"));
+		// ReviewsCount
+		TableColumn starsCol = new TableColumn("Stars");
+		starsCol.setMinWidth(20);
+		starsCol.setCellValueFactory(new PropertyValueFactory<Reviews, Float>("stars"));
+		// FriendCount
+		TableColumn voteCol = new TableColumn("Vote Count");
+		voteCol.setMinWidth(20);
+		voteCol.setCellValueFactory(new PropertyValueFactory<Reviews, Float>("voteCount"));
+
+		userReviewTable.setItems(reviewData);
+		userReviewTable.getColumns().addAll(reviewIDCol, reviewDateCol, businessIDCol, starsCol,voteCol);
 	}
 
 	// ------/
@@ -341,5 +410,67 @@ public class YelpSearchInterfaceController {
 			averageStars.set(newReviewsCount);
 		}
 	}
+	
+	public static class Reviews{
+		private final SimpleStringProperty userID;
+		private final SimpleStringProperty reviewsID;
+		private final SimpleStringProperty reviewDate;
+		private final SimpleStringProperty businessID;
+		private final SimpleFloatProperty stars;
+		private final SimpleFloatProperty voteCount;
+		
+		private Reviews(String newUserID, String newReviewsID, String date, String newBusinessID,float newStars, float newVoteCount ) {
 
+			this.userID = new SimpleStringProperty(newUserID);
+			this.reviewsID = new SimpleStringProperty(newReviewsID);
+			this.reviewDate = new SimpleStringProperty(date);
+			this.businessID = new SimpleStringProperty(newBusinessID);
+			this.stars = new SimpleFloatProperty(newStars);
+			this.voteCount = new SimpleFloatProperty(newVoteCount);
+			System.out.println("Star count" + stars);
+			System.out.println("Vote count" + voteCount);
+		}
+		//// User
+		public String getUserID() {
+			return userID.get();
+		}
+		public void setUserID(String fName) {
+			userID.set(fName);
+		}
+		//ReviewsID
+		public String getReviewsID() {
+			return reviewsID.get();
+		}
+		public void setReviewsID(String fName) {
+			reviewsID.set(fName);
+		}
+		//ReviewDate
+		public String getReviewDate() {
+			return reviewDate.get();
+		}
+		public void setReviewDate(String fName) {
+			reviewDate.set(fName);
+		}
+		//BusinessID
+		public String getBusinessID() {
+			return businessID.get();
+		}
+		public void setBusinessID(String newReviewsCount) {
+			businessID.set(newReviewsCount);
+		}
+		//Stars
+		public Float getStars() {
+			return stars.get();
+		}
+		public void setStars(float newReviewsCount) {
+			stars.set(newReviewsCount);
+		}
+		//Votes
+		public Float getVoteCount() {
+			return voteCount.get();
+		}
+		public void setVoteCount(int newReviewsCount) {
+			voteCount.set(newReviewsCount);
+		}
+	}
 }
