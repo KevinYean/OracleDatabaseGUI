@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -20,11 +21,14 @@ import java.util.concurrent.TimeUnit;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -32,7 +36,9 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 public class YelpSearchInterfaceController {
@@ -45,6 +51,15 @@ public class YelpSearchInterfaceController {
 
 	@FXML
 	private TextArea businessQueryText;
+
+	@FXML
+	private AnchorPane categoryPane;
+
+	@FXML
+	private AnchorPane subCategoryPane;
+	
+	@FXML
+	private Button clearBut;
 
 	///// ----------User------------//
 	@FXML
@@ -75,13 +90,13 @@ public class YelpSearchInterfaceController {
 	private ChoiceBox SelectChoiceBox;
 	@FXML
 	private Text reviewsByText;
-	@FXML 
+	@FXML
 	private TableView<Reviews> userReviewTable;
 
 	// Samples
 	private ObservableList<YelpID> data = FXCollections.observableArrayList();
 	private ObservableList<Reviews> reviewData = FXCollections.observableArrayList();
-	
+
 	public YelpSearchInterfaceController() {
 
 		businessTabbool = false;
@@ -128,12 +143,137 @@ public class YelpSearchInterfaceController {
 	}
 
 	// -----------------------------BusinessSearch --------//
-	public void OnTest() {
+	public void OnBusinessTabClicled() {
 		if (businessTabbool == false) {
-			System.out.println("Test");
 			businessTabbool = true;
-			// businessQueryText.setText("Kevin");
+			AddCheckCategoryBoxes();
 		}
+	}
+
+	/**
+	 * Adds Category
+	 */
+	public void AddCheckCategoryBoxes() {
+
+		String sqlQuery = "SELECT * " + "FROM BusinessCategory";
+
+		// Execute Select SQL Statement
+		Statement stmt;
+		try {
+			stmt = connection.createStatement();
+
+			System.out.println(sqlQuery);
+			ResultSet r = stmt.executeQuery(sqlQuery); // Inserts the query into ShowQuery
+			ResultSetMetaData meta = r.getMetaData();
+			int i = 0;
+			while (r.next()) {
+				CheckBox test = new CheckBox();
+				test = new CheckBox();
+				test.selectedProperty().addListener(new ChangeListener<Boolean>() {
+					@Override
+					public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+						// TODO Auto-generated method stub
+						CategorySelected();
+					}
+				});
+				test.setLayoutY(i);
+				test.setText(r.getString("categoryName"));
+				categoryPane.getChildren().add(test);
+				i = i + 20;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// categoryPane.getChildren().add(test);
+		// test.add
+	}
+
+	/**
+	 * Check Category
+	 */
+	public void CategorySelected() {
+
+		List<String> mainCategoryList = new ArrayList<String>();
+
+		// Go through every children in
+		for (int i = 0; i < categoryPane.getChildren().size(); i++) {
+			CheckBox temp = (CheckBox) categoryPane.getChildren().get(i);
+			if (temp.isSelected()) {
+				mainCategoryList.add(temp.getText());
+			}
+		}
+		AddSubCategories(mainCategoryList);
+	}
+
+	/**
+	 * Adds SubCategory
+	 */
+	public void AddSubCategories(List<String> mainCategoryList) {
+		// Clear
+		subCategoryPane.getChildren().clear();
+
+		String sqlQuery = "";
+
+		for (int i = 0; i < mainCategoryList.size(); i++) {
+			if (i == 0) {
+				sqlQuery += "SELECT subName "
+						+ "FROM Subcategory "
+						+ "WHERE mainCategory = '" + mainCategoryList.get(i) + "'";
+			} else {
+				sqlQuery += " AND subName in("
+						+ "SELECT subName "
+						+ "FROM Subcategory "
+						+ "WHERE mainCategory = '" + mainCategoryList.get(i) + "'";
+			}
+		}
+		for(int i = 1 ; i <mainCategoryList.size(); i++) {
+			sqlQuery += ")";
+		}
+
+		System.out.println(sqlQuery);
+		businessQueryText.setText(sqlQuery);
+		
+		// Execute Select SQL Statement
+		Statement stmt;
+		try {
+			if (mainCategoryList.size() > 0) {
+				stmt = connection.createStatement();
+
+				System.out.println(sqlQuery);
+				ResultSet r = stmt.executeQuery(sqlQuery); // Inserts the query into ShowQuery
+				ResultSetMetaData meta = r.getMetaData();
+				int i = 0;
+				while (r.next()) {
+					CheckBox test = new CheckBox();
+					test = new CheckBox();
+					test.selectedProperty().addListener(new ChangeListener<Boolean>() {
+						@Override
+						public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+							// TODO Auto-generated method stub
+							// CategorySelected();
+						}
+					});
+					test.setLayoutY(i);
+					test.setText(r.getString("subName"));
+					subCategoryPane.getChildren().add(test);
+					i = i + 20;
+				}
+				System.out.println(i);
+				subCategoryPane.setPrefSize(50, i);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void SetDefault() {
+		// Go through every children in
+				for (int i = 0; i < categoryPane.getChildren().size(); i++) {
+					CheckBox temp = (CheckBox) categoryPane.getChildren().get(i);
+					temp.setSelected(false);
+				}
 	}
 
 	// --------------------------------User----------------//
@@ -218,12 +358,8 @@ public class YelpSearchInterfaceController {
 		ResultSetMetaData meta = r.getMetaData();
 
 		while (r.next()) {
-			YelpID test = new YelpID(r.getString("userid"), 
-					r.getString("name"), 
-					r.getDate("yelpingSince").toString(),
-					r.getInt("reviewsCount"),
-					r.getInt("friendCount"),
-					r.getInt("averageStars"));
+			YelpID test = new YelpID(r.getString("userid"), r.getString("name"), r.getDate("yelpingSince").toString(),
+					r.getInt("reviewsCount"), r.getInt("friendCount"), r.getInt("averageStars"));
 			data.add(test);
 		}
 
@@ -268,7 +404,7 @@ public class YelpSearchInterfaceController {
 		avgStarsCol.setCellValueFactory(new PropertyValueFactory<YelpID, Float>("averageStars"));
 
 		userTable.setItems(data);
-		userTable.getColumns().addAll(nameCol, userIDCol, memberSinceCol, reviewsCountCol,friendCountCol,avgStarsCol);
+		userTable.getColumns().addAll(nameCol, userIDCol, memberSinceCol, reviewsCountCol, friendCountCol, avgStarsCol);
 	}
 
 	public void OnUserRowClicked() {
@@ -277,7 +413,7 @@ public class YelpSearchInterfaceController {
 		YelpID yelpTest = userTable.getSelectionModel().getSelectedItem();
 		System.out.println(yelpTest.getUserID());
 		System.out.println(userTable.getSelectionModel().getSelectedCells());
-		reviewsByText.setText("Reviews by User: " + yelpTest.getName() + "(" +yelpTest.getUserID().trim()+ ")");
+		reviewsByText.setText("Reviews by User: " + yelpTest.getName() + "(" + yelpTest.getUserID().trim() + ")");
 		try {
 			AddRowsReviews(yelpTest.getUserID());
 		} catch (SQLException e) {
@@ -285,15 +421,15 @@ public class YelpSearchInterfaceController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void AddRowsReviews(String userID) throws SQLException {
 		userReviewTable.getColumns().clear();
 		reviewData = FXCollections.observableArrayList();
-		
-		userID = userID.trim(); //Removes whitespace
+
+		userID = userID.trim(); // Removes whitespace
 		System.out.println(userID);
-		String sqlQuery = "SELECT * " + "FROM Reviews WHERE userID = '" + userID + "'" ;
-	
+		String sqlQuery = "SELECT * " + "FROM Reviews WHERE userID = '" + userID + "'";
+
 		// Execute Select SQL Statement
 		Statement stmt = connection.createStatement();
 		System.out.println(sqlQuery);
@@ -303,17 +439,14 @@ public class YelpSearchInterfaceController {
 		while (r.next()) {
 			System.out.println("Stars " + r.getInt("stars"));
 			System.out.println("Stars " + r.getString("stars"));
-			Reviews test = new Reviews(r.getString("userid"), 
-					r.getString("reviewsID"), 
-					r.getDate("reviewDate").toString(),
-					r.getString("businessID"),
-					r.getLong("stars"),
+			Reviews test = new Reviews(r.getString("userid"), r.getString("reviewsID"),
+					r.getDate("reviewDate").toString(), r.getString("businessID"), r.getLong("stars"),
 					r.getLong("voteCount"));
 			reviewData.add(test);
 		}
 		AddUserReviewsTable();
 	}
-	
+
 	public void AddUserReviewsTable() {
 		System.out.println("Columns added");
 
@@ -339,7 +472,7 @@ public class YelpSearchInterfaceController {
 		voteCol.setCellValueFactory(new PropertyValueFactory<Reviews, Float>("voteCount"));
 
 		userReviewTable.setItems(reviewData);
-		userReviewTable.getColumns().addAll(reviewIDCol, reviewDateCol, businessIDCol, starsCol,voteCol);
+		userReviewTable.getColumns().addAll(reviewIDCol, reviewDateCol, businessIDCol, starsCol, voteCol);
 	}
 
 	// ------/
@@ -410,16 +543,17 @@ public class YelpSearchInterfaceController {
 			averageStars.set(newReviewsCount);
 		}
 	}
-	
-	public static class Reviews{
+
+	public static class Reviews {
 		private final SimpleStringProperty userID;
 		private final SimpleStringProperty reviewsID;
 		private final SimpleStringProperty reviewDate;
 		private final SimpleStringProperty businessID;
 		private final SimpleFloatProperty stars;
 		private final SimpleFloatProperty voteCount;
-		
-		private Reviews(String newUserID, String newReviewsID, String date, String newBusinessID,float newStars, float newVoteCount ) {
+
+		private Reviews(String newUserID, String newReviewsID, String date, String newBusinessID, float newStars,
+				float newVoteCount) {
 
 			this.userID = new SimpleStringProperty(newUserID);
 			this.reviewsID = new SimpleStringProperty(newReviewsID);
@@ -430,45 +564,57 @@ public class YelpSearchInterfaceController {
 			System.out.println("Star count" + stars);
 			System.out.println("Vote count" + voteCount);
 		}
+
 		//// User
 		public String getUserID() {
 			return userID.get();
 		}
+
 		public void setUserID(String fName) {
 			userID.set(fName);
 		}
-		//ReviewsID
+
+		// ReviewsID
 		public String getReviewsID() {
 			return reviewsID.get();
 		}
+
 		public void setReviewsID(String fName) {
 			reviewsID.set(fName);
 		}
-		//ReviewDate
+
+		// ReviewDate
 		public String getReviewDate() {
 			return reviewDate.get();
 		}
+
 		public void setReviewDate(String fName) {
 			reviewDate.set(fName);
 		}
-		//BusinessID
+
+		// BusinessID
 		public String getBusinessID() {
 			return businessID.get();
 		}
+
 		public void setBusinessID(String newReviewsCount) {
 			businessID.set(newReviewsCount);
 		}
-		//Stars
+
+		// Stars
 		public Float getStars() {
 			return stars.get();
 		}
+
 		public void setStars(float newReviewsCount) {
 			stars.set(newReviewsCount);
 		}
-		//Votes
+
+		// Votes
 		public Float getVoteCount() {
 			return voteCount.get();
 		}
+
 		public void setVoteCount(int newReviewsCount) {
 			voteCount.set(newReviewsCount);
 		}
