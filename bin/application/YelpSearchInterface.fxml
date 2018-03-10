@@ -10,9 +10,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.YelpSearchInterfaceController">
    <center>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="507.0" prefWidth="893.0" BorderPane.alignment="CENTER">
          <children>
-            <TabPane prefHeight="400.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane prefHeight="507.0" prefWidth="893.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab text="Connect to Database">
                   <content>
@@ -21,11 +21,11 @@
                 </Tab>
                   <Tab onSelectionChanged="#OnBusinessTabClicled" text="Business Search">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="318.0" prefWidth="586.0">
                            <children>
-                              <SplitPane dividerPositions="0.6475644699140402" prefHeight="373.0" prefWidth="700.0">
+                              <SplitPane dividerPositions="0.6475644699140402" prefHeight="479.0" prefWidth="893.0">
                                  <items>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="117.0" prefWidth="125.0">
                                        <children>
                                           <ScrollPane layoutX="14.0" layoutY="24.0" prefHeight="200.0" prefWidth="138.0">
                                             <content>
@@ -37,15 +37,15 @@
                                                 <AnchorPane fx:id="subCategoryPane" maxHeight="20000.0" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="132.0" />
                                              </content>
                                           </ScrollPane>
-                                          <Text layoutX="349.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reviews" />
+                                          <Text layoutX="407.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reviews" />
                                           <Text layoutX="59.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" />
                                           <Text layoutX="185.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sub-Category" />
                                           <Text layoutX="14.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Checkin" />
-                                          <DatePicker layoutX="304.0" layoutY="41.0" prefHeight="25.0" prefWidth="133.0" />
-                                          <DatePicker layoutX="304.0" layoutY="90.0" prefHeight="25.0" prefWidth="133.0" />
-                                          <Text layoutX="304.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From" />
-                                          <Text layoutX="304.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To" />
-                                          <ChoiceBox layoutX="303.0" layoutY="132.0" prefHeight="25.0" prefWidth="74.0" value="=">
+                                          <DatePicker fx:id="fromDate" layoutX="362.0" layoutY="41.0" prefHeight="25.0" prefWidth="133.0" />
+                                          <DatePicker fx:id="toDate" layoutX="362.0" layoutY="90.0" prefHeight="25.0" prefWidth="133.0" />
+                                          <Text layoutX="362.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From" />
+                                          <Text layoutX="362.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To" />
+                                          <ChoiceBox fx:id="starsBusinessBox" layoutX="361.0" layoutY="132.0" prefHeight="25.0" prefWidth="74.0" value="=">
                                              <items>
                                                 <FXCollections fx:factory="observableArrayList">
                                                    <String fx:value="=" />
@@ -54,7 +54,7 @@
                                                 </FXCollections>
                                              </items>
                                           </ChoiceBox>
-                                          <ChoiceBox layoutX="304.0" layoutY="186.0" prefHeight="25.0" prefWidth="73.0" value="=">
+                                          <ChoiceBox fx:id="votesBusinessBox" layoutX="362.0" layoutY="186.0" prefHeight="25.0" prefWidth="73.0" value="=">
                                              <items>
                                                 <FXCollections fx:factory="observableArrayList">
                                                    <String fx:value="=" />
@@ -63,13 +63,13 @@
                                                 </FXCollections>
                                              </items>
                                           </ChoiceBox>
-                                          <Text layoutX="304.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stars" />
-                                          <Text layoutX="304.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Votes" />
-                                          <TextField layoutX="383.0" layoutY="133.0" prefHeight="25.0" prefWidth="60.0" />
-                                          <TextField layoutX="383.0" layoutY="186.0" prefHeight="25.0" prefWidth="60.0" />
-                                          <TextField layoutX="93.0" layoutY="332.0" prefHeight="25.0" prefWidth="60.0" />
-                                          <Text layoutX="14.0" layoutY="328.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Checkins" />
-                                          <ChoiceBox layoutX="14.0" layoutY="332.0" prefHeight="25.0" prefWidth="73.0" value="=">
+                                          <Text layoutX="362.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stars" />
+                                          <Text layoutX="362.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Votes" />
+                                          <TextField fx:id="starsBusinessCount" layoutX="441.0" layoutY="133.0" prefHeight="25.0" prefWidth="60.0" />
+                                          <TextField fx:id="votesBusinessCount" layoutX="441.0" layoutY="186.0" prefHeight="25.0" prefWidth="60.0" />
+                                          <TextField fx:id="numbCheckinField" layoutX="93.0" layoutY="428.0" prefHeight="25.0" prefWidth="60.0" />
+                                          <Text layoutX="14.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Checkins" />
+                                          <ChoiceBox fx:id="numbCheckinBox" layoutX="14.0" layoutY="428.0" prefHeight="25.0" prefWidth="73.0" value="=">
                                              <items>
                                                 <FXCollections fx:factory="observableArrayList">
                                                    <String fx:value="=" />
@@ -79,26 +79,110 @@
                                              </items>
                                           </ChoiceBox>
                                           <Text layoutX="14.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From" />
-                                          <Text layoutX="14.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To" />
-                                          <ComboBox layoutX="47.0" layoutY="251.0" prefHeight="25.0" prefWidth="32.0" />
-                                          <ComboBox layoutX="107.0" layoutY="251.0" prefHeight="25.0" prefWidth="32.0" />
-                                          <ComboBox layoutX="47.0" layoutY="281.0" prefHeight="25.0" prefWidth="32.0" />
-                                          <ComboBox layoutX="107.0" layoutY="281.0" prefHeight="25.0" prefWidth="32.0" />
-                                          <TableView layoutX="190.0" layoutY="246.0" prefHeight="121.0" prefWidth="241.0" />
+                                          <Text layoutX="14.0" layoutY="351.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To" />
+                                          <ComboBox fx:id="From" layoutX="47.0" layoutY="251.0" prefHeight="25.0" prefWidth="170.0">
+                                          	<items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                   <String fx:value="Sunday" />
+                                                   <String fx:id="1" fx:value="Monday" />
+                                                   <String fx:id="2" fx:value="Tuesday" />
+                                                   <String fx:value="Wednesday" />
+                                                   <String fx:value="Thursday" />
+                                                   <String fx:value="Friday" />
+                                                   <String fx:value="Saturday" />
+
+                                                </FXCollections>
+                                             </items>
+                                          </ComboBox>
+                                          <ComboBox fx:id="FromHours" layoutX="47.0" layoutY="280.0" prefHeight="25.0" prefWidth="170.0">
+                                            	<items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                   <String fx:value="00:00-01:00" />
+                                                   <String fx:value="01:00-02:00" />
+                                                   <String fx:value="02:00-03:00" />
+                                                   <String fx:value="03:00-04:00" />
+                                                   <String fx:value="04:00-05:00" />
+                                                   <String fx:value="05:00-06:00" />
+                                                   <String fx:value="06:00-07:00" />
+                                                   <String fx:value="07:00-08:00" />
+                                                   <String fx:value="08:00-09:00" />
+                                                   <String fx:value="09:00-10:00" />
+                                                   <String fx:value="10:00-11:00" />
+                                                   <String fx:value="11:00-12:00" />
+                                                   <String fx:value="12:00-13:00" />
+                                                   <String fx:value="13:00-14:00" />
+                                                   <String fx:value="14:00-15:00" />
+                                                   <String fx:value="15:00-16:00" />
+                                                   <String fx:value="16:00-17:00" />
+                                                   <String fx:value="17:00-18:00" />
+                                                   <String fx:value="18:00-19:00" />
+                                                   <String fx:value="19:00-20:00" />
+                                                   <String fx:value="20:00-21:00" />
+                                                   <String fx:value="21:00-22:00" />
+                                                   <String fx:value="22:00-23:00" />
+                                                   <String fx:value="23:00-00:00" />
+                                                </FXCollections>
+                                             </items>
+                                          </ComboBox>
+                                          <ComboBox fx:id="To" layoutX="47.0" layoutY="334.0" prefHeight="25.0" prefWidth="171.0">
+                                            	<items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                               	   <String fx:value="Sunday" />
+                                                   <String fx:value="Monday" />
+                                                   <String fx:value="Tuesday" />
+                                                   <String fx:value="Wednesday" />
+                                                   <String fx:value="Thursday" />
+                                                   <String fx:value="Friday" />
+                                                   <String fx:value="Saturday" />
+                                                </FXCollections>
+                                             </items>
+                                          </ComboBox>
+                                          <ComboBox fx:id="ToHours" layoutX="47.0" layoutY="365.0" prefHeight="25.0" prefWidth="170.0">
+                                             	<items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                   <String fx:value="00:00-01:00" />
+                                                   <String fx:value="01:00-02:00" />
+                                                   <String fx:value="02:00-03:00" />
+                                                   <String fx:value="03:00-04:00" />
+                                                   <String fx:value="04:00-05:00" />
+                                                   <String fx:value="05:00-06:00" />
+                                                   <String fx:value="06:00-07:00" />
+                                                   <String fx:value="07:00-08:00" />
+                                                   <String fx:value="08:00-09:00" />
+                                                   <String fx:value="09:00-10:00" />
+                                                   <String fx:value="10:00-11:00" />
+                                                   <String fx:value="11:00-12:00" />
+                                                   <String fx:value="12:00-13:00" />
+                                                   <String fx:value="13:00-14:00" />
+                                                   <String fx:value="14:00-15:00" />
+                                                   <String fx:value="15:00-16:00" />
+                                                   <String fx:value="16:00-17:00" />
+                                                   <String fx:value="17:00-18:00" />
+                                                   <String fx:value="18:00-19:00" />
+                                                   <String fx:value="19:00-20:00" />
+                                                   <String fx:value="20:00-21:00" />
+                                                   <String fx:value="21:00-22:00" />
+                                                   <String fx:value="22:00-23:00" />
+                                                   <String fx:value="23:00-00:00" />
+                                                </FXCollections>
+                                             </items>
+                                          </ComboBox>
+                                          <TableView fx:id="businessReviewTableView" layoutX="238.0" layoutY="272.0" prefHeight="199.0" prefWidth="330.0" />
+                                          <Text fx:id="reviewsByBusiness" layoutX="238.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reviews by Business: " />
                                        </children></AnchorPane>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <SplitPane dividerPositions="0.6568364611260054" orientation="VERTICAL" prefHeight="375.0" prefWidth="422.0">
+                                          <SplitPane dividerPositions="0.6568364611260054" orientation="VERTICAL" prefHeight="477.0" prefWidth="313.0">
                                              <items>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="173.0" prefWidth="223.0">
                                                    <children>
-                                                      <TableView layoutX="14.0" layoutY="14.0" prefHeight="222.0" prefWidth="218.0" />
+                                                      <TableView fx:id="businessTableView" layoutX="12.0" layoutY="14.0" onMousePressed="#OnBusinessRowClicked" prefHeight="282.0" prefWidth="287.0" />
                                                    </children></AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="125.0" prefWidth="803.0">
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="188.0" prefWidth="420.0">
                                                    <children>
-                                                      <TextArea fx:id="businessQueryText" editable="false" layoutX="14.0" layoutY="2.0" prefHeight="90.0" prefWidth="217.0" promptText="&lt;show query here&gt;" wrapText="true" />
-                                                      <Button layoutX="85.0" layoutY="94.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Query" />
-                                                      <Button fx:id="clearBut" layoutX="14.0" layoutY="94.0" mnemonicParsing="false" onAction="#SetDefault" prefHeight="12.0" prefWidth="49.0" text="Clear" />
+                                                      <TextArea fx:id="businessQueryText" editable="false" layoutX="14.0" layoutY="2.0" prefHeight="118.0" prefWidth="283.0" promptText="&lt;show query here&gt;" wrapText="true" />
+                                                      <Button fx:id="queryReview" layoutX="118.0" layoutY="127.0" mnemonicParsing="false" onAction="#OnClickBusinessSearchButton" prefHeight="25.0" prefWidth="76.0" text="Query" />
+                                                      <Button fx:id="clearBut" layoutX="14.0" layoutY="127.0" mnemonicParsing="false" onAction="#SetDefault" prefHeight="12.0" prefWidth="49.0" text="Clear" />
                                                    </children>
                                                 </AnchorPane>
                                              </items>
@@ -115,7 +199,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <SplitPane dividerPositions="0.5" prefHeight="373.0" prefWidth="700.0">
+                              <SplitPane dividerPositions="0.5" prefHeight="479.0" prefWidth="893.0">
                                  <items>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
@@ -174,7 +258,7 @@
                                           <TextField fx:id="reviewsField" layoutX="290.0" layoutY="90.0" prefHeight="25.0" prefWidth="47.0" />
                                           <TextField fx:id="numberFriendsField" layoutX="290.0" layoutY="119.0" prefHeight="25.0" prefWidth="47.0" />
                                           <TextField fx:id="avgStarsField" layoutX="290.0" layoutY="150.0" prefHeight="25.0" prefWidth="47.0" />
-                                          <TableView fx:id="userReviewTable" layoutX="11.0" layoutY="230.0" prefHeight="133.0" prefWidth="328.0" />
+                                          <TableView fx:id="userReviewTable" layoutX="11.0" layoutY="230.0" prefHeight="235.0" prefWidth="424.0" />
                                           <Text fx:id="reviewsByText" layoutX="15.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reviews by User: ">
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
@@ -184,21 +268,21 @@
                                     </AnchorPane>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <SplitPane dividerPositions="0.5415549597855228" orientation="VERTICAL" prefHeight="375.0" prefWidth="422.0">
+                                          <SplitPane dividerPositions="0.5415549597855228" orientation="VERTICAL" prefHeight="479.0" prefWidth="444.0">
                                              <items>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                    <children>
-                                                      <TableView fx:id="userTable" layoutX="13.0" layoutY="22.0" onMousePressed="#OnUserRowClicked" prefHeight="170.0" prefWidth="323.0" />
+                                                      <TableView fx:id="userTable" layoutX="13.0" layoutY="22.0" onMousePressed="#OnUserRowClicked" prefHeight="225.0" prefWidth="419.0" />
                                                       <Text layoutX="14.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Results">
                                                          <font>
                                                             <Font name="System Bold" size="12.0" />
                                                          </font></Text>
                                                    </children></AnchorPane>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="247.0" prefWidth="430.0">
                                                    <children>
-                                                      <TextArea fx:id="userQueryText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="107.0" prefWidth="322.0" promptText="&lt;show query here&gt;" wrapText="true" />
-                                                      <Button fx:id="userQueryButton" layoutX="129.0" layoutY="129.0" mnemonicParsing="false" onAction="#OnClickUserSearchButton" text="Execute Query" />
-                                                      <Button fx:id="userClearQueryButton" layoutX="284.0" layoutY="129.0" mnemonicParsing="false" onAction="#ClearRowsUserTable" text="Clear" />
+                                                      <TextArea fx:id="userQueryText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="145.0" prefWidth="419.0" promptText="&lt;show query here&gt;" wrapText="true" />
+                                                      <Button fx:id="userQueryButton" layoutX="122.0" layoutY="170.0" mnemonicParsing="false" onAction="#OnClickUserSearchButton" text="Execute Query" />
+                                                      <Button fx:id="userClearQueryButton" layoutX="277.0" layoutY="170.0" mnemonicParsing="false" onAction="#ClearRowsUserTable" text="Clear" />
                                                    </children>
                                                 </AnchorPane>
                                              </items>
